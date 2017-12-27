@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 
 class TaskItem extends Component {
 
+    changeStatus = ()=>{
+        this.props.onChangeStatus(this.props.task.id);
+    }
+
+    deleteItem = ()=>{
+        this.props.onDeleteItem(this.props.task.id);
+    }
+
   render() {
       var {task, index} = this.props;
 
@@ -10,7 +18,13 @@ class TaskItem extends Component {
                 <td>{index + 1}</td>
                 <td>{task.name}</td>
                 <td className="text-center">
-                    <span className={task.status === true ? "label label-success": "label label-danger"}>
+                    <span
+                        className={task.status === true ?
+                            "label label-success"
+                            : "label label-danger"
+                        }
+                    onClick={this.changeStatus}
+                    >
                         {task.status === true ? "Active": "Disable"}
                                                 </span>
                 </td>
@@ -19,7 +33,7 @@ class TaskItem extends Component {
                         <span className="fa fa-pencil mr-5"></span>Sửa
                     </button>
                     &nbsp;
-                    <button type="button" className="btn btn-danger">
+                    <button type="button" className="btn btn-danger" onClick={this.deleteItem}>
                         <span className="fa fa-trash mr-5"></span>Xóa
                     </button>
                 </td>

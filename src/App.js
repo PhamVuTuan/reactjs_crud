@@ -86,6 +86,46 @@ class  App extends Component {
         localStorage.setItem('tasks',JSON.stringify(tasks));
     }
 
+    onChangeStatus =(data)=>{
+        if(data){
+            var tasks = this.state.tasks.map((task)=>{
+                if(task.id === data){
+                    return Object.assign({},task,{
+                        status : !task.status
+                    });
+                }else{
+                    return task;
+                }
+            });
+
+            this.setState({
+                tasks: tasks
+            });
+
+            localStorage.setItem('tasks',JSON.stringify(tasks));
+
+        }
+    }
+
+    onDeleteItem = (data)=> {
+        if (data) {
+            var tasks = this.state.tasks.map((task) => {
+                if (task.id !== data) {
+                    return task;
+                }
+            });
+
+            console.log(tasks);
+            // this.setState({
+            //     tasks: tasks
+            // });
+
+            // localStorage.setItem('tasks',JSON.stringify(tasks));
+
+        }
+
+    }
+
     render(){
 
         var{tasks , isDisplayForm }= this.state;
@@ -120,6 +160,8 @@ class  App extends Component {
                     <Control/>
                     <TaskList
                         tasks = {tasks}
+                        onChangeStatus = {this.onChangeStatus}
+                        onDeleteItem = {this.onDeleteItem}
                     />
                 </div>
             </div>
