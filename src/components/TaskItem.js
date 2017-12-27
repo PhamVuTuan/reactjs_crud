@@ -10,6 +10,10 @@ class TaskItem extends Component {
         this.props.onDeleteItem(this.props.task.id);
     }
 
+    editItem = ()=>{
+        this.props.onEditItem(this.props.task.id);
+    }
+
   render() {
       var {task, index} = this.props;
 
@@ -29,7 +33,7 @@ class TaskItem extends Component {
                                                 </span>
                 </td>
                 <td className="text-center">
-                    <button type="button" className="btn btn-warning">
+                    <button type="button" className="btn btn-warning" onClick={this.editItem}>
                         <span className="fa fa-pencil mr-5"></span>Sửa
                     </button>
                     &nbsp;

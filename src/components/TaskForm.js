@@ -5,10 +5,20 @@ class TaskForm extends Component {
     constructor(props){
         super(props);
         this.state = {
+            id : "",
             name:"",
             status : false
         }
 
+    }
+    componentWillMount(){
+        if(this.props.dataForm){
+            this.setState({
+                id : this.props.dataForm.id,
+                name : this.props.dataForm.name,
+                status : this.props.dataForm.status,
+            })
+        }
     }
     handleCLoseTaskForm = ()=>{
         this.props.onCloseTaskForm();
