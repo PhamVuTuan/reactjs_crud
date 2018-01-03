@@ -14,6 +14,11 @@ class  App extends Component {
             tasks: [],
             isDisplayForm: false,
             editTask: '',
+            filter :{
+                name : '',
+                status : -1,
+            },
+            keyWords : ''
         };
 
     }
@@ -63,10 +68,18 @@ class  App extends Component {
     }
 
     onToggleForm = () => {
+        if(this.state.isDisplayForm && this.state.editTask !==null) {
+            this.setState({
+                isDisplayForm: true,
+                editTask: null
+            });
+        }else{
+            this.setState({
+                isDisplayForm: !this.state.isDisplayForm,
+                editTask: null
+            });
 
-        this.setState({
-            isDisplayForm: !this.state.isDisplayForm
-        });
+        }
     }
 
     handleCloseTaskForm = () => {
@@ -80,16 +93,18 @@ class  App extends Component {
     }
 
     onSubmit = (data) => {
-        data.id = this.randomID();
-        // const tasks = Object.assign({},this.state.tasks,{data});
-        var tasks = this.state.tasks.concat(data);
-        //console.log(tasks);
-        //console.log(this.state.tasks);
+        var tasks = this.state.tasks;
+        if(!data.id){
+            data.id = this.randomID();
+            tasks.push(data);
+        }else{
+            var index = this.findIndex(data.id);
+            tasks[index] = data;
+        }
         this.setState({
             tasks: tasks,
         });
-
-        localStorage.setItem('tasks', JSON.stringify(tasks));
+       localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 
     onChangeStatus = (data) => {
@@ -148,9 +163,26 @@ class  App extends Component {
         })
     }
 
+    onFilter= (filterName, filterStatus)=>{
+        console.log(filterName, ' - ', filterStatus);
+        filterStatus = parseInt(filterStatus, 10);
+        this.setState({
+                filter:{
+                    name : filterName.toLowerCase(),
+                    status : filterStatus
+                }
+        })
+    }
+    onSearch = (keyword)=>{
+        this.setState({
+            keyWords : keyword
+        })
+
+    }
+
     render(){
 
-        var{tasks , isDisplayForm }= this.state;
+        var{tasks , isDisplayForm, filter, keyWords }= this.state;
 
         var elemTaskForm = isDisplayForm ? <TaskForm
             onCloseTaskForm = {this.handleCloseTaskForm}
@@ -158,6 +190,25 @@ class  App extends Component {
             dataForm        = {this.state.editTask}
             />
             : '';
+
+        if(filter.name){
+            tasks = tasks.filter((task)=>{
+                return task.name.toLowerCase().indexOf(filter.name) !== -1;    
+            })
+        }
+        tasks = tasks.filter((task)=>{
+           if(filter.status ===-1){
+                return task;
+           } else{
+               return task.status === (filter.status===1 ? true : false );
+           }    
+
+        })
+        if(keyWords){
+            tasks = tasks.filter((task)=>{
+                return task.name.toLowerCase().indexOf(keyWords) !== -1;    
+            })
+        }
 
     return (
         <div className="container">
@@ -180,12 +231,13 @@ class  App extends Component {
                     <button type="button" className="btn btn-danger ml-5" onClick={this.onGenerateData}>
                         <span className="fa mr-5"></span>GenerateData
                     </button>
-                    <Control/>
+                    <Control onSearch = {this.onSearch}/>
                     <TaskList
                         tasks = {tasks}
                         onChangeStatus = {this.onChangeStatus}
                         onDeleteItem = {this.onDeleteItem}
                         onEditItem = {this.onEditItem}
+                        onFilter = {this.onFilter}
                     />
                 </div>
             </div>

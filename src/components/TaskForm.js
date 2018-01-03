@@ -12,11 +12,29 @@ class TaskForm extends Component {
 
     }
     componentWillMount(){
+
         if(this.props.dataForm){
             this.setState({
                 id : this.props.dataForm.id,
                 name : this.props.dataForm.name,
                 status : this.props.dataForm.status,
+            })
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps && nextProps.dataForm){
+            this.setState({
+                id : nextProps.dataForm.id,
+                name : nextProps.dataForm.name,
+                status : nextProps.dataForm.status,
+            })
+        }
+        else if(!nextProps.dataForm){
+            this.setState({
+                id : "",
+                name:"",
+                status : false
             })
         }
     }
@@ -56,9 +74,10 @@ class TaskForm extends Component {
     }
 
   render() {
+        var {id} = this.state;
     return (
         <div className="panel panel-warning">
-                <div className="panel-heading"><h3 className="panel-title">Thêm Công Việc
+                <div className="panel-heading"><h3 className="panel-title">{id ? "Sửa công việc": "Thêm Công Việc"}
                     <span className="fa fa-times-circle text-right" onClick={this.handleCLoseTaskForm}></span></h3>
                 </div>
             <div className="panel-body">
