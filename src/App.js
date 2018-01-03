@@ -18,7 +18,9 @@ class  App extends Component {
                 name : '',
                 status : -1,
             },
-            keyWords : ''
+            keyWords : '',
+            sortName : '',
+            sortValue : ''
         };
 
     }
@@ -180,9 +182,17 @@ class  App extends Component {
 
     }
 
+    onSort = (sortName, sortValue)=>{
+       // console.log(sortName, ' aaa ', sortValue)
+        this.setState({
+            sortName : sortName,
+            sortValue : sortValue
+        })
+    }
+
     render(){
 
-        var{tasks , isDisplayForm, filter, keyWords }= this.state;
+        var{tasks , isDisplayForm, filter, keyWords , sortName, sortValue}= this.state;
 
         var elemTaskForm = isDisplayForm ? <TaskForm
             onCloseTaskForm = {this.handleCloseTaskForm}
@@ -209,6 +219,19 @@ class  App extends Component {
                 return task.name.toLowerCase().indexOf(keyWords) !== -1;    
             })
         }
+        if(sortName === 'name'){
+            tasks.sort((a,b)=>{
+                  if(a.name > b.name) return sortValue;
+                  else if(a.name <b.name) return -sortValue;
+                  else return 0; 
+            });
+        }else{
+            tasks.sort((a,b)=>{
+                if(a.status > b.status) return -sortValue;
+                else if(a.status <b.status) return sortValue;
+                else return 0; 
+          });
+        }
 
     return (
         <div className="container">
@@ -231,7 +254,11 @@ class  App extends Component {
                     <button type="button" className="btn btn-danger ml-5" onClick={this.onGenerateData}>
                         <span className="fa mr-5"></span>GenerateData
                     </button>
-                    <Control onSearch = {this.onSearch}/>
+                    <Control onSearch = {this.onSearch}
+                            onSort= {this.onSort}
+                            sortName = {sortName}
+                            sortValue = {sortValue}
+                    />
                     <TaskList
                         tasks = {tasks}
                         onChangeStatus = {this.onChangeStatus}
