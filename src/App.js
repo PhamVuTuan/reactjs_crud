@@ -5,14 +5,15 @@ import './App.css';
 import TaskForm from './components/TaskForm';
 import Control from './components/Control';
 import TaskList from "./components/TaskList";
+import { connect } from 'react-redux';
 
 class  App extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            tasks: [],
-            isDisplayForm: false,
+          //  tasks: [],
+            //isDisplayForm: false,
             editTask: '',
             filter :{
                 name : '',
@@ -35,6 +36,10 @@ class  App extends Component {
 
     }
 
+    randomID = () => {
+        return Math.random().toString(36).substring(7);
+    }
+    
     onGenerateData = () => {
         var tasks = [
             {
@@ -65,23 +70,21 @@ class  App extends Component {
 
     }
 
-    randomID = () => {
-        return Math.random().toString(36).substring(7);
-    }
+   
 
     onToggleForm = () => {
-        if(this.state.isDisplayForm && this.state.editTask !==null) {
-            this.setState({
-                isDisplayForm: true,
-                editTask: null
-            });
-        }else{
-            this.setState({
-                isDisplayForm: !this.state.isDisplayForm,
-                editTask: null
-            });
+        // if(this.state.isDisplayForm && this.state.editTask !==null) {
+        //     this.setState({
+        //         isDisplayForm: true,
+        //         editTask: null
+        //     });
+        // }else{
+        //     this.setState({
+        //         isDisplayForm: !this.state.isDisplayForm,
+        //         editTask: null
+        //     });
 
-        }
+        // }
     }
 
     handleCloseTaskForm = () => {
@@ -192,7 +195,7 @@ class  App extends Component {
 
     render(){
 
-        var{tasks , isDisplayForm, filter, keyWords , sortName, sortValue}= this.state;
+        var{ isDisplayForm, filter, keyWords , sortName, sortValue}= this.state;
 
         var elemTaskForm = isDisplayForm ? <TaskForm
             onCloseTaskForm = {this.handleCloseTaskForm}
@@ -201,37 +204,37 @@ class  App extends Component {
             />
             : '';
 
-        if(filter.name){
-            tasks = tasks.filter((task)=>{
-                return task.name.toLowerCase().indexOf(filter.name) !== -1;    
-            })
-        }
-        tasks = tasks.filter((task)=>{
-           if(filter.status ===-1){
-                return task;
-           } else{
-               return task.status === (filter.status===1 ? true : false );
-           }    
+        // if(filter.name){
+        //     tasks = tasks.filter((task)=>{
+        //         return task.name.toLowerCase().indexOf(filter.name) !== -1;    
+        //     })
+        // }
+        // tasks = tasks.filter((task)=>{
+        //    if(filter.status ===-1){
+        //         return task;
+        //    } else{
+        //        return task.status === (filter.status===1 ? true : false );
+        //    }    
 
-        })
-        if(keyWords){
-            tasks = tasks.filter((task)=>{
-                return task.name.toLowerCase().indexOf(keyWords) !== -1;    
-            })
-        }
-        if(sortName === 'name'){
-            tasks.sort((a,b)=>{
-                  if(a.name > b.name) return sortValue;
-                  else if(a.name <b.name) return -sortValue;
-                  else return 0; 
-            });
-        }else{
-            tasks.sort((a,b)=>{
-                if(a.status > b.status) return -sortValue;
-                else if(a.status <b.status) return sortValue;
-                else return 0; 
-          });
-        }
+        // })
+        // if(keyWords){
+        //     tasks = tasks.filter((task)=>{
+        //         return task.name.toLowerCase().indexOf(keyWords) !== -1;    
+        //     })
+        // }
+        // if(sortName === 'name'){
+        //     tasks.sort((a,b)=>{
+        //           if(a.name > b.name) return sortValue;
+        //           else if(a.name <b.name) return -sortValue;
+        //           else return 0; 
+        //     });
+        // }else{
+        //     tasks.sort((a,b)=>{
+        //         if(a.status > b.status) return -sortValue;
+        //         else if(a.status <b.status) return sortValue;
+        //         else return 0; 
+        //   });
+        // }
 
     return (
         <div className="container">
@@ -260,7 +263,7 @@ class  App extends Component {
                             sortValue = {sortValue}
                     />
                     <TaskList
-                        tasks = {tasks}
+                        // tasks = {tasks}
                         onChangeStatus = {this.onChangeStatus}
                         onDeleteItem = {this.onDeleteItem}
                         onEditItem = {this.onEditItem}
@@ -273,4 +276,17 @@ class  App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state)=>{
+    return {
+       
+    }
+}
+
+const mapDispatchToProps = (dispatch, props)=>{
+    return {
+       
+        }
+    
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
