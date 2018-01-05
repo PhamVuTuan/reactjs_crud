@@ -80,7 +80,7 @@ class TaskForm extends Component {
     return (
         <div className="panel panel-warning">
                 <div className="panel-heading"><h3 className="panel-title">{id ? "Sửa công việc": "Thêm Công Việc"}
-                    <span className="fa fa-times-circle text-right" onClick={this.handleCLoseTaskForm}></span></h3>
+                    <span className="fa fa-times-circle text-right" onClick={()=>{this.props.onCloseForm()}}></span></h3>
                 </div>
             <div className="panel-body">
                 <form onSubmit={this.onSubmit}>
@@ -123,6 +123,9 @@ const mapDispatchToProps = (dispatch, props)=>{
     return {
         onAddTask : (task)=>{
             dispatch(actions.addTask(task));
+        },
+        onCloseForm : ()=>{
+            dispatch(actions.onCloseForm());
         }
     }
 }

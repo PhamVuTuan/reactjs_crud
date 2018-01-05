@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from './../actions/index'
+
 
 class TaskItem extends Component {
 
@@ -27,7 +30,7 @@ class TaskItem extends Component {
                             "label label-success"
                             : "label label-danger"
                         }
-                    onClick={this.changeStatus}
+                    onClick={()=>{this.props.changeStatus(task.id)}}
                     >
                         {task.status === true ? "Kích Hoạt": "Ẩn"}
                                                 </span>
@@ -47,4 +50,13 @@ class TaskItem extends Component {
   }
 }
 
-export default TaskItem;
+
+const mapDispatchToProps = (dispatch, props)=>{
+    return {
+          changeStatus : (id)=>{
+             dispatch(actions.updateStatus(id));
+          }  
+        }
+}
+
+export default connect(null,mapDispatchToProps)(TaskItem);

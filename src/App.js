@@ -6,6 +6,7 @@ import TaskForm from './components/TaskForm';
 import Control from './components/Control';
 import TaskList from "./components/TaskList";
 import { connect } from 'react-redux';
+import * as actions from './actions/index';
 
 class  App extends Component {
 
@@ -70,22 +71,7 @@ class  App extends Component {
 
     }
 
-   
 
-    onToggleForm = () => {
-        // if(this.state.isDisplayForm && this.state.editTask !==null) {
-        //     this.setState({
-        //         isDisplayForm: true,
-        //         editTask: null
-        //     });
-        // }else{
-        //     this.setState({
-        //         isDisplayForm: !this.state.isDisplayForm,
-        //         editTask: null
-        //     });
-
-        // }
-    }
 
     handleCloseTaskForm = () => {
 
@@ -110,26 +96,6 @@ class  App extends Component {
             tasks: tasks,
         });
        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-
-    onChangeStatus = (data) => {
-        if (data) {
-            var tasks = this.state.tasks.map((task) => {
-                if (task.id === data) {
-                    return Object.assign({}, task, {
-                        status: !task.status
-                    });
-                } else {
-                    return task;
-                }
-            });
-
-            this.setState({
-                tasks: tasks
-            });
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-
-        }
     }
 
     findIndex = (id) => {
@@ -195,7 +161,8 @@ class  App extends Component {
 
     render(){
 
-        var{ isDisplayForm, filter, keyWords , sortName, sortValue}= this.state;
+        var{ filter, keyWords , sortName, sortValue}= this.state;
+        var{isDisplayForm}= this.props;
 
         var elemTaskForm = isDisplayForm ? <TaskForm
             onCloseTaskForm = {this.handleCloseTaskForm}
@@ -235,7 +202,7 @@ class  App extends Component {
         //         else return 0; 
         //   });
         // }
-
+       // console.log(this.props)
     return (
         <div className="container">
             <div className="text-center">
@@ -250,7 +217,7 @@ class  App extends Component {
                 <div className={isDisplayForm ? "col-xs-8 col-sm-8 col-md-8 col-lg-8" : "col-xs-12 col-sm-12 col-md-12 col-lg-12" }>
                     <button type="button"
                             className="btn btn-primary"
-                            onClick={this.onToggleForm}
+                            onClick={()=>{this.props.onToggleForm()}}
                     >
                         <span className="fa fa-plus mr-5"></span>Thêm Công Việc
                     </button>
@@ -278,13 +245,15 @@ class  App extends Component {
 
 const mapStateToProps = (state)=>{
     return {
-       
+        isDisplayForm : state.isDisplayForm,
     }
 }
 
 const mapDispatchToProps = (dispatch, props)=>{
     return {
-       
+            onToggleForm : ()=>{
+                dispatch(actions.onToggle());
+            }
         }
     
 }

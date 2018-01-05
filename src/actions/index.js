@@ -13,3 +13,22 @@ export const addTask= (task)=> {
         task
     }
 };
+
+export const onToggle= ()=> {
+    return {
+        type : types.TOGGLE_FORM,
+    }
+};
+
+export const onCloseForm= ()=> {
+    return {
+        type : types.CLOSE_FORM,
+    }
+};
+
+export const updateStatus= (id)=> {
+    return {
+        type : types.UPDATE_TASK_STATUS,
+        id
+    }
+};
