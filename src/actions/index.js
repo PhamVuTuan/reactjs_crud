@@ -25,10 +25,27 @@ export const onCloseForm= ()=> {
         type : types.CLOSE_FORM,
     }
 };
+export const onOpenForm= ()=> {
+    return {
+        type : types.OPEN_FORM,
+    }
+};
 
 export const updateStatus= (id)=> {
     return {
         type : types.UPDATE_TASK_STATUS,
         id
+    }
+};
+export const deleteTask= (id)=> {
+    return {
+        type : types.DELETE_TASK,
+        id
+    }
+};
+export const editTask= (task)=> {
+    return {
+        type : types.EDIT_TASK,
+        task
     }
 };

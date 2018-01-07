@@ -7,11 +7,10 @@ class TaskForm extends Component {
     constructor(props){
         super(props);
         this.state = {
-            id : "",
-            name:"",
+            id : '',
+            name : '',
             status : false
         }
-
     }
     componentWillMount(){
 
@@ -41,7 +40,7 @@ class TaskForm extends Component {
         }
     }
     handleCLoseTaskForm = ()=>{
-        this.props.onCloseTaskForm();
+        this.props.onCloseForm();
     }
 
     onChange = (event)=>{
@@ -89,13 +88,13 @@ class TaskForm extends Component {
                         <input type="text" className="form-control"
                           name="name"
                           value={this.state.name}
-                          onChange ={this.onChange} 
+                          onChange ={this.onChange}
                         />
                     </div>
                     <label>Trạng Thái :</label>
-                    <select 
+                    <select
                      className="form-control"
-                     name="status" 
+                     name="status"
                      value={this.state.status}
                      onChange={this.onChange}>
                         <option value={true}>Kích Hoạt</option>
@@ -115,7 +114,7 @@ class TaskForm extends Component {
 
 const mapStateToProps = (state)=>{
     return {
-       
+        dataForm : state.taskEditing
     }
 }
 

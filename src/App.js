@@ -159,6 +159,21 @@ class  App extends Component {
         })
     }
 
+    onToggleForm = ()=>{
+        var {taskEditing} = this.props;
+        if(taskEditing && taskEditing.id !== ''){
+            this.props.openForm();
+        }else{
+            this.props.onToggleForm();
+        }
+        this.props.onClearTask({
+           id: '',
+           name : '',
+           status : false,
+        });
+
+    }
+
     render(){
 
         var{ filter, keyWords , sortName, sortValue}= this.state;
@@ -167,7 +182,7 @@ class  App extends Component {
         var elemTaskForm = isDisplayForm ? <TaskForm
             onCloseTaskForm = {this.handleCloseTaskForm}
             onSubmit        = {this.onSubmit}
-            dataForm        = {this.state.editTask}
+            // dataForm        = {this.state.editTask}
             />
             : '';
 
@@ -217,7 +232,7 @@ class  App extends Component {
                 <div className={isDisplayForm ? "col-xs-8 col-sm-8 col-md-8 col-lg-8" : "col-xs-12 col-sm-12 col-md-12 col-lg-12" }>
                     <button type="button"
                             className="btn btn-primary"
-                            onClick={()=>{this.props.onToggleForm()}}
+                            onClick={this.onToggleForm}
                     >
                         <span className="fa fa-plus mr-5"></span>Thêm Công Việc
                     </button>
@@ -233,7 +248,6 @@ class  App extends Component {
                         // tasks = {tasks}
                         onChangeStatus = {this.onChangeStatus}
                         onDeleteItem = {this.onDeleteItem}
-                        onEditItem = {this.onEditItem}
                         onFilter = {this.onFilter}
                     />
                 </div>
@@ -246,6 +260,7 @@ class  App extends Component {
 const mapStateToProps = (state)=>{
     return {
         isDisplayForm : state.isDisplayForm,
+        taskEditing : state.taskEditing
     }
 }
 
@@ -253,7 +268,16 @@ const mapDispatchToProps = (dispatch, props)=>{
     return {
             onToggleForm : ()=>{
                 dispatch(actions.onToggle());
-            }
+            },
+            openForm : ()=>{
+                dispatch(actions.onOpenForm());
+            },
+            onClearTask : (task)=>{
+                dispatch(actions.editTask(task));
+            },
+            closeForm : ()=>{
+                dispatch(actions.onCloseForm());
+            },
         }
     
 }
