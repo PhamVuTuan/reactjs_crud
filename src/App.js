@@ -13,13 +13,6 @@ class  App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          //  tasks: [],
-            //isDisplayForm: false,
-            editTask: '',
-            filter :{
-                name : '',
-                status : -1,
-            },
             keyWords : '',
             sortName : '',
             sortValue : ''
@@ -32,7 +25,6 @@ class  App extends Component {
 
             var tasks = JSON.parse(localStorage.getItem('tasks'));
             this.setState({tasks: tasks});
-            //console.log(tasks)
         }
 
     }
@@ -83,73 +75,7 @@ class  App extends Component {
         this.setState({isDisplayForm: true})
     }
 
-    onSubmit = (data) => {
-        var tasks = this.state.tasks;
-        if(!data.id){
-            data.id = this.randomID();
-            tasks.push(data);
-        }else{
-            var index = this.findIndex(data.id);
-            tasks[index] = data;
-        }
-        this.setState({
-            tasks: tasks,
-        });
-       localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-
-    findIndex = (id) => {
-        var {tasks} = this.state;
-        var result = -1;
-        tasks.forEach((task, index) => {
-            if (task.id === id) {
-                result = index;
-            }
-        });
-        return result;
-    }
-
-
-    onDeleteItem = (data)=> {
-            var {tasks}= this.state;
-            var index = this.findIndex(data);
-            if(index !==-1){
-                tasks.splice(index, 1);
-            }
-            this.setState({
-                tasks: tasks
-            });
-            localStorage.setItem('tasks',JSON.stringify(tasks));
-           this.handleCloseTaskForm();
-
-    }
-
-    onEditItem = (data)=> {
-        this.handleOpenTaskForm();
-        var {tasks}= this.state;
-        var index  = this.findIndex(data);
-        var editTask = tasks[index];
-        this.setState({
-            editTask : editTask
-        })
-    }
-
-    onFilter= (filterName, filterStatus)=>{
-        console.log(filterName, ' - ', filterStatus);
-        filterStatus = parseInt(filterStatus, 10);
-        this.setState({
-                filter:{
-                    name : filterName.toLowerCase(),
-                    status : filterStatus
-                }
-        })
-    }
-    onSearch = (keyword)=>{
-        this.setState({
-            keyWords : keyword
-        })
-
-    }
+   
 
     onSort = (sortName, sortValue)=>{
        // console.log(sortName, ' aaa ', sortValue)
@@ -176,47 +102,13 @@ class  App extends Component {
 
     render(){
 
-        var{ filter, keyWords , sortName, sortValue}= this.state;
+        var{ sortName, sortValue}= this.state;
         var{isDisplayForm}= this.props;
 
+
         var elemTaskForm = isDisplayForm ? <TaskForm
-            onCloseTaskForm = {this.handleCloseTaskForm}
-            onSubmit        = {this.onSubmit}
-            // dataForm        = {this.state.editTask}
             />
             : '';
-
-        // if(filter.name){
-        //     tasks = tasks.filter((task)=>{
-        //         return task.name.toLowerCase().indexOf(filter.name) !== -1;    
-        //     })
-        // }
-        // tasks = tasks.filter((task)=>{
-        //    if(filter.status ===-1){
-        //         return task;
-        //    } else{
-        //        return task.status === (filter.status===1 ? true : false );
-        //    }    
-
-        // })
-        // if(keyWords){
-        //     tasks = tasks.filter((task)=>{
-        //         return task.name.toLowerCase().indexOf(keyWords) !== -1;    
-        //     })
-        // }
-        // if(sortName === 'name'){
-        //     tasks.sort((a,b)=>{
-        //           if(a.name > b.name) return sortValue;
-        //           else if(a.name <b.name) return -sortValue;
-        //           else return 0; 
-        //     });
-        // }else{
-        //     tasks.sort((a,b)=>{
-        //         if(a.status > b.status) return -sortValue;
-        //         else if(a.status <b.status) return sortValue;
-        //         else return 0; 
-        //   });
-        // }
        // console.log(this.props)
     return (
         <div className="container">
@@ -239,8 +131,7 @@ class  App extends Component {
                     <button type="button" className="btn btn-danger ml-5" onClick={this.onGenerateData}>
                         <span className="fa mr-5"></span>GenerateData
                     </button>
-                    <Control onSearch = {this.onSearch}
-                            onSort= {this.onSort}
+                    <Control onSort= {this.onSort}
                             sortName = {sortName}
                             sortValue = {sortValue}
                     />
@@ -260,7 +151,7 @@ class  App extends Component {
 const mapStateToProps = (state)=>{
     return {
         isDisplayForm : state.isDisplayForm,
-        taskEditing : state.taskEditing
+        taskEditing : state.taskEditing,
     }
 }
 

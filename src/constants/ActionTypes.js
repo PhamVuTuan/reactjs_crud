@@ -14,3 +14,9 @@ export const UPDATE_TASK_STATUS = 'UPDATE_TASK_STATUS';
 export const DELETE_TASK = 'DELETE_TASK';
 
 export const EDIT_TASK = 'EDIT_TASK';
+
+export const FILTER_TABLES = 'FILTER_TABLES';
+
+export const SEARCH = 'SEARCH';
+
+export const SORT = 'SORT';

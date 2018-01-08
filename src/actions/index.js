@@ -49,3 +49,21 @@ export const editTask= (task)=> {
         task
     }
 };
+export const onFilterTables= (filter)=> {
+    return {
+        type : types.FILTER_TABLES,
+        filter
+    }
+};
+export const onSearchTask= (keyword)=> {
+    return {
+        type : types.SEARCH,
+        keyword
+    }
+};
+export const onSort= (sort)=> {
+    return {
+        type : types.SORT,
+        sort
+    }
+};

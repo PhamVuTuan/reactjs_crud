@@ -31,7 +31,6 @@ var myReducer = (state= initialState, action)=>{
             return state;
         
         case  types.ADD_TASK :
-            console.log(action)
              var task ={
                 id : action.task.id,
                 name : action.task.name,
